@@ -23,11 +23,19 @@ st.markdown(
 
 st.markdown("### OLT Commands")
 
+
+def clean(text):
+    """() er vitor-er lekha ar Huawei/Bdcom/V.Sol shobdo bad dey."""
+    text = re.sub(r"\([^)]*\)?", " ", text)
+    text = re.sub(r"(?i)huawei|bdcom|v\.?\s?sol", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
 c1, c2 = st.columns(2)
 pon = c1.number_input("Pon", min_value=0, value=1, step=1)
 onu = c2.number_input("Onu", min_value=0, value=1, step=1)
 
-rmac_raw = st.text_input("Router MAC (full)", placeholder="14EB-B66B-6EB3").strip()
+rmac_raw = clean(st.text_input("Router MAC (full)", placeholder="14EB-B66B-6EB3"))
 
 digits = re.sub(r"[^0-9A-Fa-f]", "", rmac_raw).upper()
 last4 = digits[-4:] if len(digits) >= 4 else ""
@@ -49,7 +57,7 @@ def show(items):
 tab1, tab2 = st.tabs(["BDCOM", "HUAWEI"])
 
 with tab1:
-    b_sn = st.text_input("ONU MAC / SN", placeholder="ECOM-9D03FF9B", key="b_sn").strip()
+    b_sn = clean(st.text_input("ONU MAC / SN", placeholder="ECOM-9D03FF9B", key="b_sn"))
 
     show([
         ("Find Onu (ONU MAC)", f"show gpon onu-information sn {b_sn or '<ONU MAC>'}"),
@@ -67,7 +75,7 @@ with tab1:
 
 with tab2:
     e1, e2 = st.columns([3, 1])
-    h_raw = e1.text_input("ONU MAC ", placeholder="4577CE9A", key="h_sn").strip()
+    h_raw = clean(e1.text_input("ONU MAC (: er pore)", placeholder="4577CE9A", key="h_sn"))
     h_sn = h_raw.split(":")[-1].strip().upper()
     slot = e2.number_input("Slot 0/_", min_value=0, value=1, step=1, key="h_slot")
 
