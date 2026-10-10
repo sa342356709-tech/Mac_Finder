@@ -31,10 +31,10 @@ rmac_raw = st.text_input("Router MAC (full)", placeholder="14EB-B66B-6EB3").stri
 
 digits = re.sub(r"[^0-9A-Fa-f]", "", rmac_raw).upper()
 last4 = digits[-4:] if len(digits) >= 4 else ""
-if len(digits) == 12:
-    huawei_mac = "-".join(digits[i:i + 4] for i in range(0, 12, 4))
+if digits:
+    huawei_mac = "-".join(digits[i:i + 4] for i in range(0, len(digits), 4))
 else:
-    huawei_mac = rmac_raw
+    huawei_mac = ""
 
 if last4:
     st.caption(f"Last 4 digit: {last4}")
@@ -67,7 +67,8 @@ with tab1:
 
 with tab2:
     e1, e2 = st.columns([3, 1])
-    h_sn = e1.text_input("ONU MAC / SN", placeholder="378F021", key="h_sn").strip()
+    h_raw = e1.text_input("ONU MAC (: er pore)", placeholder="4577CE9A", key="h_sn").strip()
+    h_sn = h_raw.split(":")[-1].strip().upper()
     slot = e2.number_input("Slot 0/_", min_value=0, value=1, step=1, key="h_slot")
 
     show([
