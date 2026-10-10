@@ -67,7 +67,7 @@ with tab1:
 
 with tab2:
     e1, e2 = st.columns([3, 1])
-    h_raw = e1.text_input("ONU MAC (: er pore)", placeholder="4577CE9A", key="h_sn").strip()
+    h_raw = e1.text_input("ONU MAC ", placeholder="4577CE9A", key="h_sn").strip()
     h_sn = h_raw.split(":")[-1].strip().upper()
     slot = e2.number_input("Slot 0/_", min_value=0, value=1, step=1, key="h_slot")
 
