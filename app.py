@@ -75,8 +75,9 @@ with tab1:
 
 with tab2:
     e1, e2 = st.columns([3, 1])
-    h_raw = clean(e1.text_input("ONU MAC (: er pore)", placeholder="4577CE9A", key="h_sn"))
-    h_sn = h_raw.split(":")[-1].strip().upper()
+    h_raw = clean(e1.text_input("ONU MAC", placeholder="4577CE9A", key="h_sn"))
+    h_parts = [t for t in re.split(r"[:\-\s]+", h_raw) if t]
+    h_sn = re.sub(r"(?i)^(hwtc|htwc)", "", h_parts[-1]).upper() if h_parts else ""
     slot = e2.number_input("Slot 0/_", min_value=0, value=1, step=1, key="h_slot")
 
     show([
